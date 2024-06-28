@@ -1,5 +1,5 @@
-import React from 'react'
 import MoviesList from './MoviesList'
+
 export default function RightColumn() {
     return (
         <div className="w-3/4 bg-gray-100 px-5 py-2">
