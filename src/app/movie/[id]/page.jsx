@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import LeftColumn from "@/app/components/LeftColumn";
 import ThemeContext from "@/context/ThemeContext";
 import Movie from "./Movie";
+import Navbar from "@/app/components/Navbar";
 import ModeSwitch from "@/app/components/ModeSwitch";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -45,11 +46,7 @@ export default function page({ params }) {
 
                     <LeftColumn />
                     <div className="w-3/4  px-5 py-2">
-                        <div className='flex items-center justify-between '>
-                            <h2 className="text-xl py-3">Featured Movies</h2>
-                            <h2 className=''>Search Bar</h2>
-                            <ModeSwitch />
-                        </div>
+                        <Navbar />
                         <div>
                             <div className="p-4 max-w-4xl mx-auto">
                                 <SkeletonTheme baseColor={theme === 'dark' ? '#202020' : '#ebebeb'} highlightColor={theme === 'dark' ? '#444' : '#f5f5f5'}>
@@ -105,11 +102,7 @@ export default function page({ params }) {
 
                 <LeftColumn />
                 <div className="w-3/4  px-5 py-2">
-                    <div className='flex items-center justify-between '>
-                        <h2 className="text-xl py-3">Featured Movies</h2>
-                        <h2 className=''>Search Bar</h2>
-                        <ModeSwitch />
-                    </div>
+                    <Navbar />
                     <div>
                         <Movie movie={movie} credits={credits} />
                     </div>

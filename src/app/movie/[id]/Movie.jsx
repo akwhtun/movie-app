@@ -3,15 +3,16 @@ import { useContext } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 export default function Movie({ movie, credits }) {
 
+    console.log(credits);
     const { theme, setTheme } = useContext(ThemeContext);
     return (
 
-        <div className="flex">
+        <div className="flex justify-start">
             <div className="cursor-pointer">
                 <p onClick={() => history.back()}><FaArrowLeftLong className="text-2xl" /></p>
             </div>
             <div className="p-4 max-w-4xl mx-auto">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start justify-between gap-4">
                     <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="mb-4 rounded-lg w-80 h-96 object-cover" />
 
                     <div>
@@ -40,7 +41,7 @@ export default function Movie({ movie, credits }) {
                         {credits.cast.slice(0, 8).map((castMember) => (
                             <div key={castMember.cast_id} className="bg-white p-4 shadow rounded">
                                 <img src={`https://image.tmdb.org/t/p/w200${castMember.profile_path}`} alt={castMember.name} className="mb-2 rounded" />
-                                <h3 className="text-lg font-semibold">{castMember.name}</h3>
+                                <h3 className="text-lg font-semibold text-black">{castMember.name}</h3>
                                 <p className="text-gray-600">{castMember.character}</p>
                             </div>
                         ))}
