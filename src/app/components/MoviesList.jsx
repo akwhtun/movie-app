@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
 import ThemeContext from "@/context/ThemeContext";
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import Link from "next/link";
 
 export default function MoviesList({ backdrop_path, id, original_language, original_title, overview, poster_path, release_date, vote_average, vote_count }) {
-
 
   const { theme, setTheme } = useContext(ThemeContext);
   return (
@@ -27,9 +25,9 @@ export default function MoviesList({ backdrop_path, id, original_language, origi
 
 
         <p className="mb-2 line-clamp-2">{overview}</p>
-        <a href={`https://www.themoviedb.org/movie/${id}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline absolute bottom-0">
+        <Link href={`/movie/${id}`} className="text-blue-500 hover:underline absolute bottom-0">
           View Details
-        </a>
+        </Link>
       </div>
     </div>
   );

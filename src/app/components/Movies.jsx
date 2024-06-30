@@ -40,9 +40,11 @@ export default function Movies() {
 
                 setMovies(moviesData);
                 setTotalPage(moviesTotalPage);
-                setLoading(false);
+
             } catch {
                 setLoading(false);
+            } finally {
+                setLoading(false)
             }
         };
         fetchMovies();
@@ -55,14 +57,14 @@ export default function Movies() {
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4'>
                 {
                     loadingArray.map(arr => (
-                        <>
+                        <div key={arr}>
                             <div className={`p-4 shadow-lg rounded-lg border ${theme === 'dark' ? 'border-gray-200' : 'border-gray-800'}`}>
                                 <SkeletonTheme baseColor={theme === 'dark' ? '#202020' : '#ebebeb'} highlightColor={theme === 'dark' ? '#444' : '#f5f5f5'}>
                                     <Skeleton height={400} />
                                     <Skeleton height={40} count={3} />
                                 </SkeletonTheme>
                             </div>
-                        </>
+                        </div>
                     ))
                 }
             </div>
@@ -72,11 +74,13 @@ export default function Movies() {
     }
 
     return (
+
         <div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
                 {movies.map(movie => (
                     <MoviesList key={movie.id} {...movie} loading={loading} />
                 ))}
+
             </div>
             <div className="flex justify-center items-center mt-4">
                 <Link

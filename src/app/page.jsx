@@ -2,7 +2,7 @@
 
 import LeftColumn from "./components/LeftColumn"
 import RightColumn from "./components/RightColumn"
-import ThemeContext from "../context/ThemeContext";  
+import ThemeContext from "../context/ThemeContext";
 import { useState } from "react"
 export default function Home() {
 
