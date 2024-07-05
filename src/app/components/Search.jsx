@@ -1,25 +1,32 @@
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { IoSearchSharp } from "react-icons/io5";
+import ThemeContext from "../context/ThemeContext";
+
 export default function Search() {
     const [searchKeyword, setSearchKeyword] = useState("");
     const searchParam = useSearchParams();
     const searchKey = searchParam.get("search");
+    const { theme } = useContext(ThemeContext);
 
     const handleSearch = (e) => {
         e.preventDefault();
-        window.location.href = `/?search=${searchKeyword}`
+        window.location.href = `/?search=${searchKeyword}`;
     }
 
     return (
-        <div className='bg-gray-200 flex items-center border rounded-lg overflow-hidden'>
+        <div className={`border ${theme === 'dark' ? 'bg-gray-800 border-gray-200' : 'bg-gray-200 border-gray-800'} flex items-center rounded-lg overflow-hidden`}>
             <p>
-                <IoSearchSharp className='text-3xl text-black' />
+                <IoSearchSharp className={`text-3xl ${theme === 'dark' ? 'text-white' : 'text-black'}`} />
             </p>
             <form onSubmit={handleSearch}>
-                <input type="text" className='text-md w-72 bg-gray-200 outline-none text-black p-0.5' placeholder='Enter search keyword...'
+                <input
+                    type="text"
+                    className={`${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-gray-200 text-gray-800'} text-md w-72 outline-none p-0.5`}
+                    placeholder='Enter search keyword...'
                     value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)} />
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                />
             </form>
         </div>
     )

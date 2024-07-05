@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import ThemeContext from "@/context/ThemeContext";
+import { useContext } from "react";
+import ThemeContext from "@/app/context/ThemeContext";
 import Link from "next/link";
 
 export default function MoviesList({ backdrop_path, id, original_language, original_title, overview, poster_path, release_date, vote_average, vote_count }) {

@@ -1,25 +1,17 @@
 "use client"
+import LeftColumn from "./components/LeftColumn";
+import RightColumn from "./components/RightColumn";
+import ThemeContext from "@/app/context/ThemeContext";
+import { useContext } from "react";
 
-import LeftColumn from "./components/LeftColumn"
-import RightColumn from "./components/RightColumn"
-import ThemeContext from "../context/ThemeContext";
-import { useState } from "react"
 export default function Home() {
 
-  const [theme, setTheme] = useState("dark");
+  const { theme } = useContext(ThemeContext);
 
   return (
-
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-
-      <div className={`min-h-screen flex ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
-
-        <LeftColumn />
-        <RightColumn />
-
-      </div>
-
-    </ThemeContext.Provider>
-  )
+    <div className={`min-h-screen flex ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
+      <LeftColumn />
+      <RightColumn />
+    </div>
+  );
 }
-

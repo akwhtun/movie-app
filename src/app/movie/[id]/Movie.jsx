@@ -1,10 +1,9 @@
-import ThemeContext from "@/context/ThemeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import ThemeContext from "@/app/context/ThemeContext";
 export default function Movie({ movie, credits }) {
 
-    console.log(credits);
-    const { theme, setTheme } = useContext(ThemeContext);
+    const { theme, setTheme } = useContext(ThemeContext)
     return (
 
         <div className="flex justify-start">
@@ -39,9 +38,9 @@ export default function Movie({ movie, credits }) {
                     <h2 className="text-xl font-semibold mb-2">Cast</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {credits.cast.slice(0, 8).map((castMember) => (
-                            <div key={castMember.cast_id} className="bg-white p-4 shadow rounded">
+                            <div key={castMember.cast_id} className={`${theme == 'dark' ? 'bg-black' : 'bg-white'} p-4 shadow rounded`}>
                                 <img src={`https://image.tmdb.org/t/p/w200${castMember.profile_path}`} alt={castMember.name} className="mb-2 rounded" />
-                                <h3 className="text-lg font-semibold text-black">{castMember.name}</h3>
+                                <h3 className={`${theme == 'dark' ? 'text-white' : 'text-black'}text-lg font-semibold `}>{castMember.name}</h3>
                                 <p className="text-gray-600">{castMember.character}</p>
                             </div>
                         ))}
