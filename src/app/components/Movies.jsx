@@ -12,12 +12,16 @@ export default function Movies() {
     const searchParam = useSearchParams();
     const searchPage = parseInt(searchParam.get("page")) || 1;
     const searchKey = searchParam.get("search");
+    const filterKey = searchParam.get("filter");
+    const genreKey = searchParam.get("genreId");
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(searchPage);
     const [totalPage, setTotalPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [movieError, setMovieError] = useState(false);
     const [searchError, setSearchError] = useState(false);
+    const [filterError, setFilterError] = useState(false);
+    const [genreError, setGenreError] = useState(false);
     const { theme } = useContext(ThemeContext);
     const loadingArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -72,14 +76,63 @@ export default function Movies() {
             }
         };
 
+        const filterMovies = async () => {
+            try {
+                const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+                const response = await fetch(`https://api.themoviedb.org/3/movie/${filterKey}?api_key=${API_KEY}&language=en-US&page=${page}`);
+                const data = await response.json();
+                const moviesData = data.results;
+                let moviesTotalPage = data.total_pages;
+
+                const MAX_PAGE_LIMIT = 500;
+                if (moviesTotalPage > MAX_PAGE_LIMIT) {
+                    moviesTotalPage = MAX_PAGE_LIMIT;
+                }
+
+                setMovies(moviesData);
+                setTotalPage(moviesTotalPage);
+                setLoading(false);
+            } catch {
+                setLoading(false);
+                setFilterError(true);
+            }
+        };
+
+        const filterMoviesWithGenre = async () => {
+            try {
+                const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+                const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreKey}&page=${page}`);
+                const data = await response.json();
+                const moviesData = data.results;
+                let moviesTotalPage = data.total_pages;
+
+                const MAX_PAGE_LIMIT = 500;
+                if (moviesTotalPage > MAX_PAGE_LIMIT) {
+                    moviesTotalPage = MAX_PAGE_LIMIT;
+                }
+
+                setMovies(moviesData);
+                setTotalPage(moviesTotalPage);
+                setLoading(false);
+            } catch {
+                setLoading(false);
+                setGenreError(true);
+            }
+        }
+
         if (searchKey !== '' && searchKey !== null) {
             searchMovies();
-        } else {
+        } else if (filterKey !== '' && filterKey !== null) {
+            filterMovies();
+        } else if (genreKey !== '' && genreKey !== null) {
+            filterMoviesWithGenre();
+        }
+        else {
             fetchMovies();
         }
-    }, [page, searchKey]);
+    }, [page, searchKey, filterKey, genreKey]);
 
-    if (movieError || searchError) {
+    if (movieError || searchError || filterError || genreError) {
         return <Error />;
     }
 
@@ -144,39 +197,106 @@ export default function Movies() {
                                 <RiArrowRightDoubleLine className='text-2xl' />
                             </Link>
                         </div>
-                    ) : (
-                        <div className="flex justify-center items-center mt-4">
-                            <Link
-                                href={`/?page=${page > 1 ? page - 1 : 1}`}
-                                className={`px-4 py-2 m-2 ${page === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
-                            >
-                                <RiArrowLeftDoubleFill className='text-2xl' />
-                                <p className='md:block hidden'>Previous</p>
-                            </Link>
-                            <Link
-                                href={`/?page=1`}
-                                className={`px-4 py-2 m-2 ${searchPage === 1 ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
-                            >
-                                1
-                            </Link>
-                            <p className='text-3xl px-4 py-2'>.....</p>
-                            {totalPage > 1 && (
+                    ) :
+                        filterKey !== null && filterKey !== '' ? (
+                            <div className="flex justify-center items-center mt-4">
                                 <Link
-                                    href={`/?page=${totalPage}`}
-                                    className={`px-4 py-2 m-2 ${searchPage === totalPage ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                    href={`/?filter=${filterKey}&page=${page > 1 ? page - 1 : 1}`}
+                                    className={`px-4 py-2 m-2 ${page === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
                                 >
-                                    {totalPage}
+                                    <RiArrowLeftDoubleFill className='text-2xl' />
+                                    <p className='md:block hidden'>Previous</p>
                                 </Link>
-                            )}
-                            <Link
-                                href={`/?page=${totalPage > page ? page + 1 : page}`}
-                                className={`px-4 py-2 m-2 ${page === totalPage ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
-                            >
-                                <p className='md:block hidden'>Next</p>
-                                <RiArrowRightDoubleLine className='text-2xl' />
-                            </Link>
-                        </div>
-                    )}
+                                <Link
+                                    href={`/?filter=${filterKey}&page=1`}
+                                    className={`px-4 py-2 m-2 ${searchPage === 1 ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                >
+                                    1
+                                </Link>
+                                <p className='text-3xl px-4 py-2'>.....</p>
+                                {totalPage > 1 && (
+                                    <Link
+                                        href={`/?filter=${filterKey}&page=${totalPage}`}
+                                        className={`px-4 py-2 m-2 ${searchPage === totalPage ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                    >
+                                        {totalPage}
+                                    </Link>
+                                )}
+                                <Link
+                                    href={`/?filter=${filterKey}&page=${totalPage > page ? page + 1 : page}`}
+                                    className={`px-4 py-2 m-2 ${page === totalPage ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
+                                >
+                                    <p className='md:block hidden'>Next</p>
+                                    <RiArrowRightDoubleLine className='text-2xl' />
+                                </Link>
+                            </div>
+                        ) :
+                            genreKey !== null && genreKey !== '' ? (
+                                <div className="flex justify-center items-center mt-4">
+                                    <Link
+                                        href={`/?genreId=${genreKey}&page=${page > 1 ? page - 1 : 1}`}
+                                        className={`px-4 py-2 m-2 ${page === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
+                                    >
+                                        <RiArrowLeftDoubleFill className='text-2xl' />
+                                        <p className='md:block hidden'>Previous</p>
+                                    </Link>
+                                    <Link
+                                        href={`/?genreId=${genreKey}&page=1`}
+                                        className={`px-4 py-2 m-2 ${searchPage === 1 ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                    >
+                                        1
+                                    </Link>
+                                    <p className='text-3xl px-4 py-2'>.....</p>
+                                    {totalPage > 1 && (
+                                        <Link
+                                            href={`/?genreId=${genreKey}&page=${totalPage}`}
+                                            className={`px-4 py-2 m-2 ${searchPage === totalPage ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                        >
+                                            {totalPage}
+                                        </Link>
+                                    )}
+                                    <Link
+                                        href={`/?genreId=${genreKey}&page=${totalPage > page ? page + 1 : page}`}
+                                        className={`px-4 py-2 m-2 ${page === totalPage ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
+                                    >
+                                        <p className='md:block hidden'>Next</p>
+                                        <RiArrowRightDoubleLine className='text-2xl' />
+                                    </Link>
+                                </div>
+                            )
+                                : (
+                                    <div className="flex justify-center items-center mt-4">
+                                        <Link
+                                            href={`/?page=${page > 1 ? page - 1 : 1}`}
+                                            className={`px-4 py-2 m-2 ${page === 1 ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
+                                        >
+                                            <RiArrowLeftDoubleFill className='text-2xl' />
+                                            <p className='md:block hidden'>Previous</p>
+                                        </Link>
+                                        <Link
+                                            href={`/?page=1`}
+                                            className={`px-4 py-2 m-2 ${searchPage === 1 ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                        >
+                                            1
+                                        </Link>
+                                        <p className='text-3xl px-4 py-2'>.....</p>
+                                        {totalPage > 1 && (
+                                            <Link
+                                                href={`/?page=${totalPage}`}
+                                                className={`px-4 py-2 m-2 ${searchPage === totalPage ? 'bg-gray-300 text-black' : 'bg-blue-500 text-white'} rounded`}
+                                            >
+                                                {totalPage}
+                                            </Link>
+                                        )}
+                                        <Link
+                                            href={`/?page=${totalPage > page ? page + 1 : page}`}
+                                            className={`px-4 py-2 m-2 ${page === totalPage ? 'bg-gray-300 text-gray-600' : 'bg-blue-500 text-white'} rounded flex`}
+                                        >
+                                            <p className='md:block hidden'>Next</p>
+                                            <RiArrowRightDoubleLine className='text-2xl' />
+                                        </Link>
+                                    </div>
+                                )}
                 </div>
             ) : (
                 <div className='flex flex-col items-center justify-center h-52 font-semibold text-xl'>
