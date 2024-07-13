@@ -5,8 +5,11 @@ import ThemeContext from "../context/ThemeContext";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Error from "../Error";
+import { signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 export default function LeftColumn() {
 
+    const { data: session } = useSession();
     const { theme, setTheme } = useContext(ThemeContext)
     const [genres, setGenres] = useState([]);
     const [error, setError] = useState(false);
@@ -44,9 +47,26 @@ export default function LeftColumn() {
     }
     return (
         <div className="w-1/4  px-5 py-2">
-            <div className='text-center py-3'>
-                My Account
-            </div>
+            {
+                !session ? (
+                    <>
+                        Not signedIn <br />
+                        <button className='text-center py-3' onClick={() => signIn("google")}>
+                            Sing In With Google
+                        </button>
+                    </>
+                ) : (
+
+                    <>
+                        {session.user.email}
+                        {session.user.name}
+                        <img src={session.user.image} alt={session.user.name} />
+                        <button className='text-center py-3' onClick={() => signOut()}>
+                            sign out
+                        </button>
+                    </>
+                )
+            }
             <nav className="mt-4  p-3">
                 <ul className="text-large">
                     <li className={`mb-2 border-0 border-b-2 p-2 border-black ${activeFilter == 'top_rated' ? 'bg-blue-500' : ''}`}><MenuItem title="Top Rated Movies" address="/?filter=top_rated" /></li>
@@ -102,6 +122,6 @@ export default function LeftColumn() {
 
             </div>
 
-        </div>
+        </div >
     )
 }
