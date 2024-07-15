@@ -6,7 +6,8 @@ import { getSession, useSession } from 'next-auth/react';
 export default function Home() {
     const { data: session } = useSession();
     const [users, setUsers] = useState([]);
-
+    const session1 = getSession();
+    console.log(session1);
     useEffect(() => {
         const fetchUser = async () => {
             if (session && session.user.isAdmin) {
@@ -31,6 +32,8 @@ export default function Home() {
 
             if (response.ok) {
                 const result = await response.json();
+                // setUsers((prevUsers) => prevUsers.filter((user) => user.email !== email));
+                setUsers((prevUsers) => prevUsers.filter((user) => user.email !== email));
                 console.log(result.message);
             } else {
                 const errorData = await response.json();
@@ -59,6 +62,7 @@ export default function Home() {
                         <tr>
                             <th className="px-4 py-2 border">Name</th>
                             <th className="px-4 py-2 border">Email</th>
+                            <th className="px-4 py-2 border">Role</th>
                             <th className="px-4 py-2 border">Action</th>
                         </tr>
                     </thead>
@@ -67,9 +71,12 @@ export default function Home() {
                             <tr key={user._id}>
                                 <td className="px-4 py-2 border">{user.name}</td>
                                 <td className="px-4 py-2 border">{user.email}</td>
-                                <td className="px-4 py-2 border">
-                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(user.email)}>Delete</button>
-                                </td>
+                                <td className="px-4 py-2 border">{user.isAdmin ? 'Admin' : 'User'}</td>
+                                {
+                                    !user.isAdmin && (<td className="px-4 py-2 border">
+                                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleDelete(user.email)}>Delete</button>
+                                    </td>)
+                                }
                             </tr>
                         ))}
                     </tbody>

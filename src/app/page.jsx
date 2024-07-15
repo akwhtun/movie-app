@@ -8,7 +8,7 @@ export default function Home() {
   const { theme } = useContext(ThemeContext);
   return (
     <div className={`min-h-screen flex ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
-      <Link href={"/admin"}>Go Admin</Link>
+      {/* <Link href={"/admin"}>Go Admin</Link> */}
       <LeftColumn />
       <RightColumn />
     </div>

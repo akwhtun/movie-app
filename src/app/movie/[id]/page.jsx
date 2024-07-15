@@ -55,12 +55,12 @@ export default function page({ params }) {
             <div className={`min-h-screen flex ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
 
                 <LeftColumn />
-                <div className="w-3/4  px-5 py-2">
+                <div className="lg:w-4/5 w-full  px-5 py-2">
                     <Navbar />
                     <div>
                         <div className="p-4 max-w-4xl mx-auto">
                             <SkeletonTheme baseColor={theme === 'dark' ? '#202020' : '#ebebeb'} highlightColor={theme === 'dark' ? '#444' : '#f5f5f5'}>
-                                <div className="flex items-start justify-between">
+                                <div className="lg:flex lg:flex-row flex-col lg:items-start items-center lg:justify-between justify-center lg:gap-4 gap-2 mt-20">
 
                                     <Skeleton height={370} width={280} />
 
@@ -108,7 +108,7 @@ export default function page({ params }) {
         <div className={`min-h-screen flex ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
 
             <LeftColumn />
-            <div className="w-3/4  px-5 py-2">
+            <div className="lg:w-4/5 w-full  px-5 py-2">
                 <Navbar />
                 <div>
                     <Movie movie={movie} credits={credits} />

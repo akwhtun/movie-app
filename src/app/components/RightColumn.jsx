@@ -6,9 +6,9 @@ export default function RightColumn() {
 
     const { theme, setTheme } = useContext(ThemeContext)
     return (
-        <div className={`w-3/4  px-5 py-2 ${theme == 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
+        <div className={`lg:w-4/5 w-full px-5 py-2 ${theme == 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
             <Navbar />
-            <div>
+            <div className='lg:mt-14 mt-20'>
                 <Movies />
             </div>
         </div>

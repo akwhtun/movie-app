@@ -138,10 +138,10 @@ export default function Movies() {
 
     if (loading) {
         return (
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4'>
+            <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-10'>
                 {loadingArray.map(arr => (
-                    <div key={arr}>
-                        <div className={`p-4 shadow-lg rounded-lg border ${theme === 'dark' ? 'border-gray-200' : 'border-gray-800'}`}>
+                    <div key={arr} className='mt-6'>
+                        <div className={`lg:p-4 md:p-2 p:1 shadow-lg rounded-lg border ${theme === 'dark' ? 'border-gray-200' : 'border-gray-800'}`}>
                             <SkeletonTheme baseColor={theme === 'dark' ? '#202020' : '#ebebeb'} highlightColor={theme === 'dark' ? '#444' : '#f5f5f5'}>
                                 <Skeleton height={400} />
                                 <Skeleton height={40} count={3} />
@@ -160,7 +160,7 @@ export default function Movies() {
                     {searchKey !== null && searchKey !== '' && (
                         <p className='text-xl'>Search For: <span className="text-red-800 font-semibold text-2xl">{searchKey}</span></p>
                     )}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:mt-4">
                         {movies.map(movie => (
                             <MoviesList key={movie.id} {...movie} loading={loading} />
                         ))}
