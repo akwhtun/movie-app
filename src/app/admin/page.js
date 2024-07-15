@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useContext } from 'react';
 import ThemeContext from '../context/ThemeContext';
 import { FaArrowLeftLong } from "react-icons/fa6";
-export default function Home() {
+export default function Page() {
     const { data: session } = useSession();
     const [users, setUsers] = useState([]);
     const [denied, setDenied] = useState(false)
