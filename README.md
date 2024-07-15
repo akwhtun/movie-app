@@ -7,8 +7,9 @@ This is a Next.js movie application that uses the TMDb API. The application allo
 - View all movies with pagination
 - Search for movies
 - Filter movies by upcoming and top-rated
-- Filter movies by genre
+- Filter movies by genre (adventure, romantic,..)
 - View movie details (rating, cast, etc.)
+- Search Cast on Google
 - Add movies to a favorite list (authentication required)
 - Google OAuth for user authentication
 - Store user data in MongoDB
