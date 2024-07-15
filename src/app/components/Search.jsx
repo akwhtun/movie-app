@@ -22,7 +22,7 @@ export default function Search() {
             <form onSubmit={handleSearch}>
                 <input
                     type="text"
-                    className={`${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-gray-200 text-gray-800'} text-md w-72 outline-none p-0.5`}
+                    className={`${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-gray-200 text-gray-800'} text-md lg:w-72 w-64 outline-none p-0.5`}
                     placeholder='Enter search keyword...'
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
