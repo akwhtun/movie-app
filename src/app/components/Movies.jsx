@@ -158,9 +158,9 @@ export default function Movies() {
             {movies.length > 0 ? (
                 <div>
                     {searchKey !== null && searchKey !== '' && (
-                        <p className='text-xl'>Search For: <span className="text-red-800 font-semibold text-2xl">{searchKey}</span></p>
+                        <p className='text-xl lg:mt-24 mt-28'>Search For: <span className="text-red-800 font-semibold text-2xl">{searchKey}</span></p>
                     )}
-                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:mt-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
                         {movies.map(movie => (
                             <MoviesList key={movie.id} {...movie} loading={loading} />
                         ))}
