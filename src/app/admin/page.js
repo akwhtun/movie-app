@@ -1,21 +1,28 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import { getSession, useSession } from 'next-auth/react';
-
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useContext } from 'react';
+import ThemeContext from '../context/ThemeContext';
+import { FaArrowLeftLong } from "react-icons/fa6";
 export default function Home() {
     const { data: session } = useSession();
     const [users, setUsers] = useState([]);
-    const session1 = getSession();
-    console.log(session1);
+    const [denied, setDenied] = useState(false)
+    const { theme } = useContext(ThemeContext);
     useEffect(() => {
         const fetchUser = async () => {
+
             if (session && session.user.isAdmin) {
                 const response = await fetch('/api/users');
                 const data = await response.json();
                 const allUsers = data.users;
                 setUsers(allUsers)
+            } else {
+                setDenied(true)
             }
+
         }
         fetchUser();
     }, [session]);
@@ -45,19 +52,22 @@ export default function Home() {
     };
 
 
-    if (!session) {
-        return <p>Loading...</p>;
-    }
+    if (denied) {
+        return <div className={`w-screen h-screen flex flex-col items-center justify-center ${theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-black'}`}>
+            <p> Access denied. Only admins can view this page.</p>
+            <Link href={"/"} className='underline mt-2'>Go Back</Link>
+        </div>
 
-    if (!session.user.isAdmin) {
-        return <p>Access denied. Only admins can view this page.</p>;
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">User List</h1>
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white border border-gray-200">
+        <div className={`container mx-auto p-4 w-screen h-screen ${theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-gray-200 text-black'}`}>
+            <div className='flex items-center my-4'>
+                <Link href={'/'}><FaArrowLeftLong className='text-2xl text-violet-700 ' /></Link>
+                <h1 className="text-2xl font-bold ms-3">User List</h1>
+            </div>
+            <div className="">
+                <table className="min-w-full ">
                     <thead>
                         <tr>
                             <th className="px-4 py-2 border">Name</th>
@@ -68,7 +78,7 @@ export default function Home() {
                     </thead>
                     <tbody>
                         {users.map((user) => (
-                            <tr key={user._id}>
+                            <tr key={user._id} className='text-center'>
                                 <td className="px-4 py-2 border">{user.name}</td>
                                 <td className="px-4 py-2 border">{user.email}</td>
                                 <td className="px-4 py-2 border">{user.isAdmin ? 'Admin' : 'User'}</td>
@@ -87,21 +97,3 @@ export default function Home() {
     );
 }
 
-// export async function getServerSideProps(context) {
-//     const session = await getSession(context);
-
-//     if (!session || !session.user.isAdmin) {
-//         return {
-//             redirect: {
-//                 destination: '/api/auth/signin',
-//                 permanent: false,
-//             },
-//         };
-//     }
-
-//     return {
-//         props: {
-//             session,
-//         },
-//     };
-// }

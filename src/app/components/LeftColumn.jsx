@@ -76,7 +76,7 @@ export default function LeftColumn() {
 
 
 
-                        <div className="flex justify-start ps-4 mt-1 ">
+                        <div className="flex justify-start ps-4 mt-1 ms-2 ">
                             <div className="flex justify-between">
                                 <div className="flex items-center">
                                     <div className="">
@@ -119,7 +119,19 @@ export default function LeftColumn() {
                     )
                 }
                 <nav className="mt-2  p-3">
+                    {
+                        session && session.user.isAdmin ? (
+                            <Link href={"/admin"} class="relative ms-2 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                <span class="relative px-5 py-1 transition-all ease-in duration-75  rounded-md group-hover:bg-opacity-0">
+                                    View User
+                                </span>
+                            </Link>
+                        ) : (
+                            ''
+                        )
+                    }
                     <ul className="text-large">
+
                         <li className={`mb-2 border-0 border-b-2 p-2 border-black ${activeFilter == 'top_rated' ? 'bg-blue-500' : ''}`}><MenuItem title="Top Rated Movies" address="/?filter=top_rated" /></li>
                         <li className={`mb-2 border-0 border-b-2 p-2 border-black ${activeFilter == 'upcoming' ? 'bg-blue-500' : ''}`}><MenuItem title="Upcoming Movies" address="/?filter=upcoming" /></li>
 

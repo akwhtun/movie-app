@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { signIn } from "next-auth/react";
 import ThemeContext from "@/app/context/ThemeContext";
 import { useState } from "react";
 import Link from "next/link";
@@ -13,7 +14,7 @@ export default function MoviesList({ backdrop_path, id, original_language, origi
   const [loading, setLoading] = useState(false)
   const handleAddFavourite = async () => {
     if (!session) {
-      alert("You need to be logged in to add favorites");
+      signIn('google');
       return;
     }
 
