@@ -9,7 +9,7 @@ import Error from "@/app/Error";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function page({ params }) {
+export default function Page({ params }) {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const [movie, setMovie] = useState();
